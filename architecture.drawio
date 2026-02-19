@@ -1,0 +1,219 @@
+<mxfile host="app.diagrams.net" modified="2026-02-19" version="21.0.0">
+  <diagram name="SDAIA Multi-Agent Architecture" id="arch">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="1">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ═══════════════ TITLE ═══════════════ -->
+        <mxCell id="title" value="SDAIA Multi-Agent AI Research System" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1;fontColor=#1a1a2e;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ USER INPUT ═══════════════ -->
+        <mxCell id="user" value="👤 User Query" style="shape=mxgraph.flowchart.start_2;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="710" y="80" width="100" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ MAIN.PY ═══════════════ -->
+        <mxCell id="main" value="&lt;b&gt;main.py&lt;/b&gt;&lt;br/&gt;Orchestrator&lt;br/&gt;&lt;font style='font-size:10px'&gt;Cost tracking · Tracing · Error handling&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="610" y="190" width="300" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ SPECIALIST AGENTS (Row) ═══════════════ -->
+        <mxCell id="researcher" value="&lt;b&gt;🔍 Researcher&lt;/b&gt;&lt;br/&gt;specialists.py&lt;br/&gt;&lt;font style='font-size:10px'&gt;max_steps=15 · tools: research&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="200" y="340" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="analyst" value="&lt;b&gt;🧪 Analyst&lt;/b&gt;&lt;br/&gt;specialists.py&lt;br/&gt;&lt;font style='font-size:10px'&gt;max_steps=20 · tools: analysis&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="650" y="340" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="writer" value="&lt;b&gt;✍️ Writer&lt;/b&gt;&lt;br/&gt;specialists.py&lt;br/&gt;&lt;font style='font-size:10px'&gt;max_steps=4 · tools: writing&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;arcSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="340" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Pipeline arrows between specialists -->
+        <mxCell id="e_res_ana" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="researcher" target="analyst" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_res_ana_lbl" value="findings" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;" vertex="1" connectable="0" parent="e_res_ana">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+        <mxCell id="e_ana_wri" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#666;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" source="analyst" target="writer" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ana_wri_lbl" value="analysis" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;fontSize=10;" vertex="1" connectable="0" parent="e_ana_wri">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint as="offset"/></mxGeometry>
+        </mxCell>
+
+        <!-- ═══════════════ OBSERVABLE AGENT ═══════════════ -->
+        <mxCell id="agent_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8f0ff;strokeColor=#9673a6;strokeWidth=2;dashed=0;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="150" y="470" width="1220" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="agent_title" value="ObservableAgent  (observable_agent.py)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;fontSize=13;fontStyle=1;fontColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="160" y="475" width="400" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- ReAct Loop box inside agent -->
+        <mxCell id="react_loop" value="&lt;b&gt;ReAct Loop&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;while step &lt; max_steps:&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;1. acompletion() via LiteLLM&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;2. Parse tool_calls&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;3. execute_tool()&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;4. Append result → messages&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="170" y="500" width="200" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- Observability trio inside agent -->
+        <mxCell id="tracer" value="&lt;b&gt;AgentTracer&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;tracer.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;start_trace · log_step&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;end_trace · get_trace_json&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="420" y="500" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="cost" value="&lt;b&gt;CostTracker&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;cost_tracker.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;add_cost · end_query&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;get_total_cost&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="500" width="180" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="loop" value="&lt;b&gt;AdvancedLoopDetector&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;loop_detector.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;Exact · Fuzzy · Stagnation&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;Jaccard similarity ≥ 0.8&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="820" y="500" width="200" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- Tool Registry inside agent -->
+        <mxCell id="registry_box" value="&lt;b&gt;ToolRegistry&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;registry.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;register · execute_tool&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;get_tools_by_category&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1050" y="500" width="190" height="110" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ TOOLS ═══════════════ -->
+        <mxCell id="search_tool" value="&lt;b&gt;search_web&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;search_tool.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;category: research&lt;/font&gt;" style="shape=mxgraph.flowchart.process;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="940" y="720" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="read_tool" value="&lt;b&gt;read_webpage&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;search_tool.py&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;category: research · SSRF guard&lt;/font&gt;" style="shape=mxgraph.flowchart.process;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1130" y="720" width="200" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ EXTERNAL SERVICES ═══════════════ -->
+        <mxCell id="openrouter" value="&lt;b&gt;OpenRouter API&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;z-ai/glm-4.5-air:free&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;via LiteLLM acompletion&lt;/font&gt;" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;labelBackgroundColor=none;sketch=0;fontStyle=1;fillColor=#FF9900;strokeColor=#232F3E;fontColor=#232F3E;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="170" y="720" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="ddg" value="&lt;b&gt;DuckDuckGo&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;html.duckduckgo.com/html/&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;BeautifulSoup parsing&lt;/font&gt;" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.internet_gateway;labelBackgroundColor=none;sketch=0;fontStyle=1;fillColor=#E7157B;strokeColor=#232F3E;fontColor=#232F3E;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="580" y="720" width="160" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="webpages" value="&lt;b&gt;Web Pages&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;HTTP GET · 10 s timeout&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;Truncated to 10 000 chars&lt;/font&gt;" style="shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.general;labelBackgroundColor=none;sketch=0;fontStyle=1;fillColor=#7AA116;strokeColor=#232F3E;fontColor=#232F3E;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="400" y="720" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ RAG PIPELINE (not yet integrated) ═══════════════ -->
+        <mxCell id="rag_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999;strokeWidth=2;dashed=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="150" y="840" width="1220" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="rag_label" value="RAG Pipeline  (RAG.py)  —  NOT YET INTEGRATED" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;fontStyle=3;fontSize=12;fontColor=#999;" vertex="1" parent="1">
+          <mxGeometry x="160" y="845" width="500" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pdf" value="&lt;b&gt;PDF Extractor&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;PyMuPDF (fitz)&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;page-by-page text&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontColor=#333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="180" y="880" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="chunker" value="&lt;b&gt;RecursiveChunker&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;LangChain splitter&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;300 tok / 50 overlap&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontColor=#333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="400" y="880" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="embed" value="&lt;b&gt;Embedding&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;text-embedding-3-small&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;1536-dim via OpenRouter&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontColor=#333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="880" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="faiss" value="&lt;b&gt;FAISS Index&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;IndexFlatL2&lt;/font&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;top-k similarity search&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontColor=#333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="840" y="880" width="170" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="rag_query" value="&lt;b&gt;search_document(query, k)&lt;/b&gt;&lt;br/&gt;&lt;font style='font-size:10px'&gt;Returns top-k chunks&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666;fontColor=#333;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="880" width="180" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- RAG pipeline arrows -->
+        <mxCell id="e_pdf_chu" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#999;dashed=1;" edge="1" source="pdf" target="chunker" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_chu_emb" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#999;dashed=1;" edge="1" source="chunker" target="embed" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_emb_fai" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#999;dashed=1;" edge="1" source="embed" target="faiss" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_fai_qry" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#999;dashed=1;" edge="1" source="faiss" target="rag_query" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ MAIN FLOW EDGES ═══════════════ -->
+        <!-- User → main -->
+        <mxCell id="e_user_main" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#333;strokeWidth=2;" edge="1" source="user" target="main" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- main → specialists -->
+        <mxCell id="e_main_res" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" source="main" target="researcher" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_ana" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" source="main" target="analyst" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_main_wri" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" source="main" target="writer" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- specialists → ObservableAgent (agent_bg) -->
+        <mxCell id="e_res_agent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;strokeWidth=1.5;" edge="1" source="researcher" target="react_loop" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ana_agent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;strokeWidth=1.5;" edge="1" source="analyst" target="react_loop" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_wri_agent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;strokeWidth=1.5;" edge="1" source="writer" target="react_loop" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ReAct loop → registry -->
+        <mxCell id="e_react_reg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#9673a6;" edge="1" source="react_loop" target="registry_box" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- registry → tools -->
+        <mxCell id="e_reg_sea" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#82b366;" edge="1" source="registry_box" target="search_tool" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_reg_rea" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#82b366;" edge="1" source="registry_box" target="read_tool" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ReAct → OpenRouter -->
+        <mxCell id="e_react_or" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#FF9900;strokeWidth=1.5;" edge="1" source="react_loop" target="openrouter" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- search_tool → DuckDuckGo -->
+        <mxCell id="e_sea_ddg" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#E7157B;" edge="1" source="search_tool" target="ddg" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- read_tool → Web pages -->
+        <mxCell id="e_rea_web" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#7AA116;" edge="1" source="read_tool" target="webpages" parent="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════ LEGEND ═══════════════ -->
+        <mxCell id="leg_bg" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#999;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="340" width="220" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_title" value="&lt;b&gt;Legend&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1380" y="345" width="220" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg1" value="Orchestration / Flow" style="rounded=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="375" width="190" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg2" value="Specialist Agents" style="rounded=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="413" width="190" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg3" value="ObservableAgent Core" style="rounded=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="451" width="190" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg4" value="Observability (Trace/Cost/Loop)" style="rounded=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="489" width="190" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg5" value="Tools" style="shape=mxgraph.flowchart.process;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="527" width="190" height="28" as="geometry" />
+        </mxCell>
+        <mxCell id="leg6" value="RAG Pipeline (not integrated)" style="rounded=1;fillColor=#f5f5f5;strokeColor=#999;dashed=1;fontSize=10;fontStyle=2;" vertex="1" parent="1">
+          <mxGeometry x="1390" y="527" width="190" height="28" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
