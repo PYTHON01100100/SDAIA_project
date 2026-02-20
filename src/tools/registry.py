@@ -1,38 +1,42 @@
 import inspect
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Optional, List
+from pydantic import BaseModel, create_model, ValidationError
 
-from pydantic import BaseModel, create_model
-
+# ===========================
+# Tool Wrapper
+# ===========================
 class Tool:
-    """A callable tool with schema."""
     def __init__(self, name: str, func: Callable, description: str):
         self.name = name
         self.func = func
         self.description = description
         self.model = self._create_pydantic_model(func)
 
-    def _create_pydantic_model(self, func: Callable) -> type[BaseModel]:
-        """Create a Pydantic model from function signature."""
+    def _create_pydantic_model(self, func: Callable) -> type(BaseModel):
         sig = inspect.signature(func)
         fields = {}
-        for name, param in sig.parameters.items():
-            if name == "self":
+
+        for param_name, param in sig.parameters.items():
+            if param_name == "self":
                 continue
 
-            annotation = param.annotation
-            if annotation == inspect.Parameter.empty:
-                annotation = str
+            annotation = (
+                param.annotation
+                if param.annotation != inspect.Parameter.empty
+                else str
+            )
 
-            default = param.default
-            if default == inspect.Parameter.empty:
-                fields[name] = (annotation, ...)
-            else:
-                fields[name] = (annotation, default)
+            default = (
+                param.default
+                if param.default != inspect.Parameter.empty
+                else ...
+            )
+
+            fields[param_name] = (annotation, default)
 
         return create_model(f"{self.name}Schema", **fields)
 
     def to_openai_schema(self) -> dict:
-        """Convert tool to OpenAI function schema format using Pydantic."""
         schema = self.model.model_json_schema()
 
         return {
@@ -46,63 +50,70 @@ class Tool:
                     "required": schema.get("required", []),
                     "additionalProperties": False,
                 },
-                "strict": True
             },
         }
 
     def execute(self, **kwargs) -> Any:
-        # Validate arguments using the model
-        validated_args = self.model(**kwargs)
-        return self.func(**validated_args.model_dump())
+        try:
+            validated_args = self.model(**kwargs)
+            result = self.func(**validated_args.model_dump())
 
+            # 🔥 أهم تعديل: نحول أي نتيجة لنص
+            if result is None:
+                return "No result returned."
+
+            if isinstance(result, (dict, list)):
+                return str(result)  # مهم عشان LLM ما يطيح
+
+            return result
+
+        except ValidationError as e:
+            return f"Validation error in tool '{self.name}': {str(e)}"
+        except Exception as e:
+            return f"Execution error in tool '{self.name}': {str(e)}"
+
+
+# ===========================
+# Registry
+# ===========================
 class ToolRegistry:
-    """Registry for managing available tools."""
     def __init__(self):
         self._tools: Dict[str, Tool] = {}
-        self._categories: Dict[str, list[str]] = {}
+        self._categories: Dict[str, List[str]] = {}
 
     def register(self, name: str, description: str, category: str = "general"):
-        """
-        Decorator to register a function as a tool.
-        
-        This method uses the Decorator Pattern to dynamically adding functionality 
-        (registration) to functions without modifying their structure.
-        """
-        # TODO: Implement the decorator
-        # 1. Create a Tool instance from the function
-        # 2. Register it in self._tools dictionary
-        # 3. Add to category in self._categories
-        # 4. Return the original function (so it can still be called normally)
-
-    
         def decorator(func: Callable):
-            tool = Tool(name=name, description=description, func=func)
-            self._tools[name]=tool
-            if category not in self._categories:
-                self._categories[category] = []
-            self._categories[category].append(tool)
+            tool = Tool(name=name, func=func, description=description)
+
+            self._tools[name] = tool
+            self._categories.setdefault(category, []).append(name)
+
             return func
+
         return decorator
 
-    def get_tool(self, name: str) -> Tool | None:
-        # TODO: Return the tool by name
+    def get_tool(self, name: str) -> Optional[Tool]:
         return self._tools.get(name)
 
-    def get_all_tools(self) -> list[Tool]:
-        # TODO: Return all tools
+    def get_all_tools(self) -> List[Tool]:
         return list(self._tools.values())
 
-
-    def get_tools_by_category(self, category: str) -> list[Tool]:
-        # TODO: Return tools by category
-        return self._categories.get(category, [])
-        
+    def get_tools_by_category(self, category: str) -> List[Tool]:
+        return [
+            self._tools[name]
+            for name in self._categories.get(category, [])
+        ]
 
     def execute_tool(self, name: str, **kwargs) -> Any:
         tool = self.get_tool(name)
-        if tool is None:
-            raise ValueError(f"Tool '{name}' not found")
+
+        if not tool:
+            return f"Tool '{name}' not found."
+
         return tool.execute(**kwargs)
 
-# Global registry instance
+
+# ===========================
+# Global Registry Instance
+# ===========================
 registry = ToolRegistry()

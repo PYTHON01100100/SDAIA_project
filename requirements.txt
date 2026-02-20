@@ -1,4 +1,4 @@
-openrouter
+openai
 pydantic
 python-dotenv
 beautifulsoup4
