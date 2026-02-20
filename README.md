@@ -82,48 +82,6 @@ MODEL_NAME=gpt-4o
 python -m src.main "Your query here"
 ```
 
-## Git Workflow
-
-### Check status
-
-```bash
-git status
-```
-
-### Stage and commit changes
-
-```bash
-git add .
-git commit -m "your commit message"
-```
-
-### Create a new branch and switch to it
-
-```bash
-git checkout -b your-branch-name
-```
-
-### Push branch to remote
-
-```bash
-git push -u origin your-branch-name
-```
-
-### Set a branch as the default (main) on GitHub
-
-1. Push your branch to remote (see above).
-2. Go to your GitHub repo → **Settings** → **Branches**.
-3. Under **Default branch**, click the switch icon and select your branch.
-4. Confirm the change.
-
-Or rename your current local branch to `main` and push:
-
-```bash
-git branch -m main                  # rename current branch to main
-git push -u origin main             # push to remote
-git push origin --delete old-name   # delete the old branch on remote (if needed)
-```
-
 ## Tasks
 
 Follow the TODO comments in the files to complete the implementation. Start with `src/tools/registry.py`, then `src/observability/`, and finally `src/agent/observable_agent.py`.
